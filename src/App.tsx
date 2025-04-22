@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import './App.css'
 
-type Tasks = {
-	task: string;
+type Task = {
 	id: string;
+	task: string;
+	completed: boolean;
 }
 
 interface OnAddTaskProp {
@@ -11,27 +12,32 @@ interface OnAddTaskProp {
 }
 
 interface TaskListProps {
-	tasks : Tasks[];
+	tasks : Task[];
 	onDelete : (id : string) => void;
+	onToggle : (id : string) => void
 }
 
 
 export default function App () {
-	const [tasks,setTasks] = useState<Tasks[]>([]);
+	const [tasks,setTasks] = useState<Task[]>([]);
 
 	function addTask(task : string) : void{
-		setTasks(prev => [...prev, {id: crypto.randomUUID(), task}])
+		setTasks(prev => [...prev, {id: crypto.randomUUID(), task, completed: false}])
 	}
 
 	function removeTask(id : string) : void {
 		setTasks(prev => prev.filter(task => task.id !== id))
 	}
 
+	function toggleTask(id : string) : void {
+		setTasks (prev => prev.map( task => task.id === id ? {...task, completed: !task.completed} : task))
+	}
+
 	return(
 		<>
 			<h1>To Do list</h1>
 			<TaskForm onAddTask = {addTask}/>
-			<TaskList tasks = {tasks} onDelete = {removeTask}/>
+			<TaskList tasks = {tasks} onToggle = {toggleTask} onDelete = {removeTask}/>
 		</>
 	)
 }
@@ -58,11 +64,14 @@ function TaskForm({onAddTask} : OnAddTaskProp) {
 	)
 }
 
-function TaskList ({tasks, onDelete} : TaskListProps) {
+function TaskList ({tasks, onDelete, onToggle} : TaskListProps) {
 
 	return(
 		<ul>
-			{tasks.map(task => <li key={task.id}><span>{task.task}</span> <button className='remove-button' onClick={() => onDelete(task.id)}>remove</button></li>)}
+			{tasks.map(task => <li key={task.id}>
+				<span className = {task.completed ? 'completed' : ''}>{task.task}</span> 
+				<button className='remove-button' onClick={() => onDelete(task.id)}>remove</button> 
+				<button className={task.completed ? 'red' : 'green'} onClick={() => onToggle(task.id)}>{task.completed ? '✗' : '✓'}</button></li>)}
 		</ul>
 	)
 
