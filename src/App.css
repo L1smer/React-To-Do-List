@@ -35,6 +35,27 @@ input:focus {
   box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
 }
 
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 20px 0px;
+}
+
+.filter-buttons button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  background-color: #ddd;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.filter-buttons button.active {
+  background-color: #007bff;
+  color: white;
+}
+
 button {
 	background-color: #007bff;
   color: white;
