@@ -8,12 +8,16 @@ interface TaskListProps {
 }
 
 export default function TaskList({ tasks, onDelete, onToggle }: TaskListProps) {
-  return tasks.map((task) => (
-    <TaskItem
-      key={task.id}
-      task={task}
-      onDelete={onDelete}
-      onToggle={onToggle}
-    />
-  ));
+  return (
+    <ul>
+      {tasks.map(task => (
+        <TaskItem
+          key={task.id}
+          task={task}
+          onToggle={onToggle}
+          onDelete={onDelete}
+        />
+      ))}
+    </ul>
+  );
 }
